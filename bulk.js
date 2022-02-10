@@ -62,8 +62,8 @@ const run = async () => {
         return [...ret, {
           status: action[operation].status,
           error: action[operation].error,
-          operation: body[i * 2],
-          document: body[i * 2 + 1]
+          operation: dataset[i],
+          document: { index: { _index: 'tweets' } }
         }]
       }
       return ret
