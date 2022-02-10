@@ -48,31 +48,31 @@ const run = async () => {
     date: new Date()
   }]
 
-  const body = dataset
-    .map(doc => [{ index: { _index: 'tweets' } }, doc])
-    .reduce((ret, item) => ([...ret, ...item]), [])
-
-  const { body: bulkResponse } = await client.bulk({ refresh: true, body })
+  const { body: bulkResponse } = await client.bulk({
+    refresh: true,
+    body: dataset
+      .map(doc => [{ index: { _index: 'tweets' } }, doc])
+      .reduce((ret, item) => ([...ret, ...item]), [])
+  })
 
   if (bulkResponse.errors) {
-    const erroredDocuments = []
-    
-    bulkResponse.items.forEach((action, i) => {
+    const erroredDocuments = bulkResponse.items.reduce((ret, action, i) => {
       const [operation] = Object.keys(action)
       if (action[operation].error) {
-        erroredDocuments.push({
+        return [...ret, {
           status: action[operation].status,
           error: action[operation].error,
           operation: body[i * 2],
           document: body[i * 2 + 1]
-        })
+        }]
       }
-    })
-    console.log(erroredDocuments)
+      return ret
+    }, [])
+    console.error('error: ', erroredDocuments)
   }
 
-  const { body: count } = await client.count({ index: 'tweets' })
-  console.log(count)
+  const { body: ret } = await client.count({ index: 'tweets' })
+  console.log('count: ', ret)
 }
 
 run().catch(console.log)
