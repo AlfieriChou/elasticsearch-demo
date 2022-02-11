@@ -69,19 +69,43 @@ async function run () {
     }
   }
 
-  // Let's search!
+  // search
   const { body } = await client.search({
     index: 'game-of-thrones',
     body: {
       query: {
         match: {
-          text: 'Winter'
+          text: 'blood'
         }
       }
     }
   })
-
   console.log(body.hits.hits)
+
+  // suggest
+  const { body: suggestBody } = await client.search({
+    index: 'game-of-thrones',
+    body: {
+      query: {
+        match: { text: 'witner' }
+      },
+      suggest: {
+        gotsuggest: {
+          text: 'witner',
+          term: { field: 'text' }
+        }
+      }
+    }
+  })
+  console.log(JSON.stringify(suggestBody.suggest, null, 2))
+
+  // sql
+  const { body: sqlBody } = await client.sql.query({
+    body: {
+      query: "SELECT * FROM \"game-of-thrones\" WHERE user='arya'"
+    }
+  })
+  console.log('----', sqlBody)
 }
 
 run().catch(console.log)
