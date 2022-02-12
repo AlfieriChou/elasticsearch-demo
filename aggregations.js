@@ -93,6 +93,7 @@ async function run() {
   const { body } = await client.search({
     index: 'test',
     size: 0,
+    explain: true,
     body: {
       aggs: {
         user_agg: {
