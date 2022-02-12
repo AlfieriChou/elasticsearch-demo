@@ -95,6 +95,20 @@ async function run() {
     size: 0,
     explain: true,
     body: {
+      query: {
+        // range
+        bool: {
+          filter: {
+            bool: {
+              must: [{
+                range: {
+                  numericField: { gte: 3, lte: 9 }
+                }
+              }]
+            }
+          }
+        }
+      },
       aggs: {
         user_agg: {
           terms: {
