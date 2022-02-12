@@ -100,8 +100,15 @@ async function run() {
             field: 'name'
           },
           aggs: {
+            // sum
             sum_agg: {
               sum: {
+                field: 'numericField'
+              }
+            },
+            // avg
+            avg_agg: {
+              avg: {
                 field: 'numericField'
               }
             }
