@@ -60,7 +60,7 @@ async function run () {
             status: action[operation].status,
             error: action[operation].error,
             operation: dataset[i],
-            document: { index: { _index: 'tweets' } }
+            document: { index: { _index: 'game-of-thrones' } }
           }]
         }
         return ret
