@@ -98,7 +98,13 @@ async function run() {
       aggs: {
         user_agg: {
           terms: {
-            field: 'name'
+            field: 'name',
+            // order by
+            order: [
+              {
+                'sum_agg.value': 'desc'
+              }
+            ]
           },
           aggs: {
             // sum
