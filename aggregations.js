@@ -118,7 +118,9 @@ async function run() {
               {
                 'sum_agg.value': 'desc'
               }
-            ]
+            ],
+            // top n (limit)
+            size: 3
           },
           aggs: {
             // sum
